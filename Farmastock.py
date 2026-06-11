@@ -40,7 +40,7 @@ def delete_product(product_id):
 
     return jsonify({"message": "Product not found"}), 404
 produtos = [
-    {"nome": "Dipirona", "quantidade": 15},
+    {"nome": "Dipirona", "quantidade": 14},
     {"nome": "Paracetamol", "quantidade": 20},
     {"nome": "Ibuprofeno", "quantidade": 8}
 ]
