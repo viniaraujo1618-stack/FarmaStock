@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///farmastock.db'
@@ -39,37 +39,55 @@ def delete_product(product_id):
         return jsonify({"message": "Product deleted successfully"}), 200
 
     return jsonify({"message": "Product not found"}), 404
-produtos = [
-    {"nome": "Dipirona", "quantidade": 14},
-    {"nome": "Paracetamol", "quantidade": 20},
-    {"nome": "Ibuprofeno", "quantidade": 8}
-]
+
 
 @app.route('/')
 def home():
-    return """
-    <h1>FarmaStock</h1>
-    <p>Sistema de Controle de Estoque</p>
-    <a href="/produtos">Ver Estoque</a>
-    """
+    return render_template('index.html')
+   
 
 @app.route('/produtos')
 def listar_produtos():
+    produtos = Product.query.all()
 
-    html = "<h1>Estoque</h1>"
+    return render_template(
+        'produtos.html',
+        produtos=produtos
+    )
+@app.route('/adicionar', methods=['GET', 'POST'])
+def adicionar():
 
-    for produto in produtos:
-        html += f"""
-        <p>
-        {produto['nome']} -
-        Quantidade: {produto['quantidade']}
-        </p>
-        """
+    if request.method == 'POST':
 
-    return html
+        nome = request.form['nome']
+        preco = float(request.form['preco'])
+        descricao = request.form['descricao']
+
+        novo_produto = Product(
+            name=nome,
+            price=preco,
+            description=descricao
+        )
+
+        db.session.add(novo_produto)
+        db.session.commit()
+
+        return redirect('/produtos')
+
+    return render_template('adicionar.html')
+@app.route('/deletar/<int:id>')
+def deletar(id):
+    produto = Product.query.get_or_404(id)
+
+    db.session.delete(produto)
+    db.session.commit()
+
+    return redirect('/produtos')
+    
+
+
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
-  
-
-
+    

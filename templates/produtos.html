@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmastock</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar a {
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .btn-home {
+            background: #555;
+        }
+
+        .btn-add {
+            background: #28a745;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-delete:hover {
+            background: #b52a37;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>📦 Farmastock - Produtos</h1>
+
+<div class="top-bar">
+    <a href="/" class="btn-home">🏠 Home</a>
+    <a href="/adicionar" class="btn-add">➕ Adicionar Produto</a>
+</div>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for produto in produtos %}
+    <tr>
+        <td>{{ produto.id }}</td>
+        <td>{{ produto.name }}</td>
+        <td>R$ {{ produto.price }}</td>
+        <td>{{ produto.description }}</td>
+        <td>
+            <a href="/deletar/{{ produto.id }}" class="btn-delete"
+               onclick="return confirm('Tem certeza que deseja deletar?')">
+               🗑 Excluir
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>
